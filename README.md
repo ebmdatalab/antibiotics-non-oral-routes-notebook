@@ -1,3 +1,7 @@
+
+At The DataLab our work on antibiotics and measures on [OpenPrescribing](https://openprescribing.net/) has focused on oral antibiotics as these are the largest volume in primary care. However there are many other ways they are administered e.g. injections, creams and in this repo we will investigate prescribing via these routes.
+
+
 # EBM DataLab's skeleton notebook environment
 
 ![status](https://github.com/ebmdatalab/<repo>/workflows/Notebook%20checks/badge.svg)
