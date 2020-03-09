@@ -50,13 +50,15 @@ WHERE
         FROM ebmdatalab.measures.dmd_objs_with_form_route
         WHERE 
         (form_route LIKE '%cream%' OR
-        form_route LIKE'%oint%') 
+        form_route LIKE'%oint%' OR
+        form_route LIKE'%cutaneous%'
+        ) 
         AND
         (bnf_code LIKE '131001%' OR # Antibacterial Preps Only Used Topically
         bnf_code LIKE '131002%' OR  #Antifungal Preparations 
-        bnf_code LIKE 'Oilatum Plus%' OR #contains benzalkonium
-        bnf_code LIKE 'Dermol%' OR #contains benzalkonium
-        bnf_code LIKE 'Emulsiderm%') #contains benzalkonium
+        bnf_name LIKE 'Oilatum Plus%' OR #contains benzalkonium
+        bnf_name LIKE 'Dermol%' OR #contains benzalkonium
+        bnf_name LIKE 'Emulsiderm%') #contains benzalkonium
         )
 GROUP BY pct, month, bnf_name, bnf_code
 ORDER BY pct, month
@@ -70,11 +72,14 @@ df_top_abx.head()
 
 df_top_abx.groupby("month")['items'].sum().plot(kind='line', title="Total items of topical antibiotics in English primary care")
 plt.ylim(0, )
-# -
+
+# +
 
 df_top_abx.nunique()
+# -
 
-# df_top_abx["bnf_name"].unique()
+## this gives us a list of unique preparations
+df_top_abx["bnf_name"].unique()
 
 # +
 
@@ -82,6 +87,8 @@ df_top_abx.nunique()
 df_products = df_top_abx.groupby(['bnf_code', 'bnf_name']).sum().reset_index().sort_values(by = 'items', ascending = False)
 df_products.head(11)
 # -
+
+# ## Map and Charts
 
 ccg_total_abx = df_top_abx.groupby(["month", "pct"])["items"].sum().reset_index()
 ccg_total_abx.head(5)
@@ -100,11 +107,11 @@ charts.deciles_chart(
         top_abx_1000,
         period_column='month',
         column='top_abx_items_per_1000',
-        title="Topical antibiotics items per 1000 (Islington CCG) ",
+        title="Topical antibiotics items per 1000 (Bath and North East Somerset CCG) ",
         show_outer_percentiles=True)
 
 #add in example CCG (Islington)
-df_subject = top_abx_1000.loc[top_abx_1000['pct'] == '08H']
+df_subject = top_abx_1000.loc[top_abx_1000['pct'] == '11E']
 plt.plot(df_subject['month'], df_subject['top_abx_items_per_1000'], 'r--')
 
 plt.show()

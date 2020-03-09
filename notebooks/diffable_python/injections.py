@@ -107,11 +107,11 @@ charts.deciles_chart(
         df_abx_1000,
         period_column='month',
         column='inj_abx_items_per_1000',
-        title="Injectable antibiotics items per 1000 (Islington CCG) ",
+        title="Injectable antibiotics items per 1000 (Bath and North East Somerset CCG CCG) ",
         show_outer_percentiles=False)
 
 #add in example CCG (Islington)
-df_subject = df_abx_1000.loc[df_abx_1000['pct'] == '08H']
+df_subject = df_abx_1000.loc[df_abx_1000['pct'] == '11E']
 plt.plot(df_subject['month'], df_subject['inj_abx_items_per_1000'], 'r--')
 
 plt.show()
