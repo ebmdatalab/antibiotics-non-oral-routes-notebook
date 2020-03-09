@@ -71,7 +71,9 @@ df_inj_abx["bnf_name"].unique()
 df_products = df_inj_abx.groupby(['bnf_code', 'bnf_name']).sum().reset_index().sort_values(by = 'items', ascending = False)
 df_products.head(11)
 
-There 
+# There may be an rugument for excluding colomycin as although it is injecatble it will mostly be used as an inhaled therapy in treatement of infections in cystic fibrosis
+
+# ## Maps and charts
 
 sql2 = """
 SELECT
