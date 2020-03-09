@@ -55,7 +55,7 @@ WHERE
         ) 
         AND
         (bnf_code LIKE '131001%' OR # Antibacterial Preps Only Used Topically
-        bnf_code LIKE '131002%' OR  #Antifungal Preparations 
+        #bnf_code LIKE '131002%' OR  #Antifungal Preparations 
         bnf_name LIKE 'Oilatum Plus%' OR #contains benzalkonium
         bnf_name LIKE 'Dermol%' OR #contains benzalkonium
         bnf_name LIKE 'Emulsiderm%') #contains benzalkonium
@@ -67,26 +67,19 @@ ORDER BY pct, month
 df_top_abx = bq.cached_read(sql, csv_path='df_top_abx.csv')
 df_top_abx['month'] = df_top_abx['month'].astype('datetime64[ns]')
 df_top_abx.head()
-
-# +
+# -
 
 df_top_abx.groupby("month")['items'].sum().plot(kind='line', title="Total items of topical antibiotics in English primary care")
 plt.ylim(0, )
 
-# +
-
 df_top_abx.nunique()
-# -
 
 ## this gives us a list of unique preparations
 df_top_abx["bnf_name"].unique()
 
-# +
-
 ##groupby bnf name + code  to see largest volume in terms of items
 df_products = df_top_abx.groupby(['bnf_code', 'bnf_name']).sum().reset_index().sort_values(by = 'items', ascending = False)
 df_products.head(11)
-# -
 
 # ## Map and Charts
 

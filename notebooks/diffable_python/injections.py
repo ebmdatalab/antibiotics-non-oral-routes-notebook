@@ -30,7 +30,7 @@ sql = '''
 SELECT
     pct,
     CAST(month AS DATE) AS month,
-    bnf_name,
+    bnf.presentation,
     bnf_code,
     SUM(items) AS items,
     SUM(actual_cost) AS cost
@@ -40,6 +40,10 @@ INNER JOIN
   hscic.ccgs AS ccg
 ON
   presc.pct=ccg.code
+INNER JOIN
+  hscic.bnf as bnf
+ON
+  presc.bnf_code = bnf.presentation_code
 WHERE
     ccg.org_type='CCG' AND
     pract.setting = 4 AND
@@ -51,7 +55,7 @@ WHERE
         form_route LIKE'%injection%' OR
         form_route LIKE'%subcutaneous')      
         AND bnf_code LIKE "050%")
-GROUP BY pct, month, bnf_name, bnf_code
+GROUP BY pct, month, presentation, bnf_code
 ORDER BY pct, month
 '''
 
@@ -65,13 +69,13 @@ plt.ylim(0, )
 
 df_inj_abx.nunique()
 
-df_inj_abx["bnf_name"].unique()
+df_inj_abx["presentation"].unique()
 
 ##groupby bnf name  to see largest volume in terms of items
-df_products = df_inj_abx.groupby(['bnf_code', 'bnf_name']).sum().reset_index().sort_values(by = 'items', ascending = False)
+df_products = df_inj_abx.groupby(['bnf_code', 'presentation']).sum().reset_index().sort_values(by = 'items', ascending = False)
 df_products.head(11)
 
-# There may be an rugument for excluding colomycin as although it is injecatble it will mostly be used as an inhaled therapy in treatement of infections in cystic fibrosis
+# There may be an argument for excluding colomycin as although it is injectable it will mostly be used as an inhaled therapy in treatement of infections in cystic fibrosis
 
 # ## Maps and charts
 
@@ -107,7 +111,7 @@ charts.deciles_chart(
         df_abx_1000,
         period_column='month',
         column='inj_abx_items_per_1000',
-        title="Injectable antibiotics items per 1000 (Bath and North East Somerset CCG CCG) ",
+        title="Injectable antibiotics items per 1000 (Bath and North East Somerset CCG) ",
         show_outer_percentiles=False)
 
 #add in example CCG (Islington)
