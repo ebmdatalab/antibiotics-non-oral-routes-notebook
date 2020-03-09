@@ -14,7 +14,7 @@
 #     name: python3
 # ---
 
-# https://github.com/ebmdatalab/openprescribing/issues/2384
+#  A user has suggested ([GitHub issue](https://github.com/ebmdatalab/openprescribing/issues/2384)) that it would be useful to have a measure of injectable antibiotics to support ongoing audit and review in antimicrobial stewardship. [OPAT services](https://www.guysandstthomas.nhs.uk/resources/patient-information/infection/opat-service.pdf) ahould be prescribing any injectable antibiotics where they exist but it is possible in some areas the prescriptions are written by the GP. In this notebook we will explore patterns of injectable antibiotic prescribing.
 
 #import libraries required for analysis
 import pandas as pd
@@ -68,8 +68,10 @@ df_inj_abx.nunique()
 df_inj_abx["bnf_name"].unique()
 
 ##groupby bnf name  to see largest volume in terms of items
-df_products = df_inj_abx.groupby(['bnf_code', 'bnf_name']).sum().sort_values(by = 'items', ascending = False).reset_index()
-df_products.head(26)
+df_products = df_inj_abx.groupby(['bnf_code', 'bnf_name']).sum().reset_index().sort_values(by = 'items', ascending = False)
+df_products.head(11)
+
+There 
 
 sql2 = """
 SELECT
